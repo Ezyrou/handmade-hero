@@ -1,17 +1,5 @@
-// I use Zig base types for integers in favor of C ABI compatible types because
-// this code is intended for x64 Windows only. Moreover, Microsoft seems to
-// define integer type sizes explicitly according to:
-// https://learn.microsoft.com/en-us/windows/win32/winprog/windows-data-types
-//
-// For example, INT is typedefed as "int" but is also said to be a 32-bit signed
-// integer, and its range is specified, so I use i32 instead of c_int.
-
-// The winapi calling convention is a switch on the CPU architecture
-// in the standard library.
 pub const WINAPI = @import("std").builtin.CallingConvention.winapi;
 
-// Mapping all the Windows error codes is one thing I don't want to do,
-// so I'll use the mapping from the standard library.
 pub const Win32Error = @import("std").os.windows.Win32Error;
 
 pub const ATOM = u16;
@@ -29,13 +17,6 @@ pub const CS_HREDRAW: u32 = 0x0002;
 pub const CS_VREDRAW: u32 = 0x0001;
 pub const CS_OWNDC: u32 = 0x0020;
 
-// A cursor to be used as input to LoadCursorW when creating
-// a window class. Cursor identifiers are listed here:
-// https://learn.microsoft.com/en-us/windows/win32/menurc/about-cursors
-//
-// IDC_ARROW is defined in WinUser.h as MAKEINTRESOURCE(32512).
-// MAKEINTRESOURCEW is the following macro in the same file:
-// ((LPWSTR)((ULONG_PTR)((WORD)(i)))).
 pub const IDC_ARROW: [*:0]align(1) const u16 = @ptrFromInt(@as(usize, 32512));
 
 pub const WS_CAPTION: u32 = 0x00C00000;
